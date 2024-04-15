@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"time"
 )
 
@@ -35,6 +36,11 @@ func (t Training) meanSpeed() float64 {
 	// вставьте ваш код ниже
 	// Формула расчета:
 	// преодолённая_дистанция_за_тренировку_в_км / время_тренировки_в_часах
+	// проверяем, что длительность тренировки больше нуля, чтобы избежать деления на ноль
+	if t.Duration.Hours() == 0 {
+		// Возвращаем 0 в случае ошибки.
+		return 0
+	}
 	return t.distance() / t.Duration.Hours()
 }
 
@@ -124,20 +130,17 @@ func (r Running) Calories() float64 {
 func (r Running) TrainingInfo() InfoMessage {
 	// вставьте ваш код ниже
 	// Вычисляем дистанцию, среднюю скорость и количество калорий с использованием методов из структуры Running.
-	distance := r.distance()
-	speed := r.meanSpeed()
-	calories := r.Calories()
 
-	// Создаем структуру InfoMessage и заполняем поля
 	info := InfoMessage{
 		TrainingType: r.TrainingType,
 		Duration:     r.Duration,
-		Distance:     distance,
-		Speed:        speed,
-		Calories:     calories,
+		Distance:     r.distance(),
+		Speed:        r.meanSpeed(),
+		Calories:     r.Calories(),
 	}
 
 	return info
+
 }
 
 // Константы для расчета потраченных килокалорий при ходьбе.
@@ -163,7 +166,7 @@ func (w Walking) Calories() float64 {
 	// вставьте ваш код ниже
 	speedMsec := w.meanSpeed() * KmHInMsec // Расчет средней скорости в м/с
 	// Расчет потраченных калорий по формуле.
-	calories := ((CaloriesWeightMultiplier*w.Weight + ((speedMsec*speedMsec)/w.Height)*CaloriesSpeedHeightMultiplier*w.Weight) * w.Duration.Hours() * MinInHours)
+	calories := ((CaloriesWeightMultiplier*w.Weight + (math.Pow(speedMsec, 2)/w.Height)*CaloriesSpeedHeightMultiplier*w.Weight) * w.Duration.Hours() * MinInHours)
 
 	return calories
 }
@@ -172,17 +175,13 @@ func (w Walking) Calories() float64 {
 // Это переопределенный метод TrainingInfo() из Training.
 func (w Walking) TrainingInfo() InfoMessage {
 	// вставьте ваш код ниже
-	distance := w.distance()
-	speed := w.meanSpeed()
-	calories := w.Calories()
 
-	// Создаем структуру InfoMessage и заполняем поля
 	info := InfoMessage{
 		TrainingType: w.TrainingType,
 		Duration:     w.Duration,
-		Distance:     distance,
-		Speed:        speed,
-		Calories:     calories,
+		Distance:     w.distance(),
+		Speed:        w.meanSpeed(),
+		Calories:     w.Calories(),
 	}
 
 	return info
@@ -235,16 +234,13 @@ func (s Swimming) Calories() float64 {
 // Это переопределенный метод TrainingInfo() из Training.
 func (s Swimming) TrainingInfo() InfoMessage {
 	// вставьте ваш код ниже
-	speed := s.meanSpeed()
-	distance := s.distance()
-	calories := s.Calories()
 
 	info := InfoMessage{
 		TrainingType: s.TrainingType,
 		Duration:     s.Duration,
-		Distance:     distance,
-		Speed:        speed,
-		Calories:     calories,
+		Distance:     s.distance(),
+		Speed:        s.meanSpeed(),
+		Calories:     s.Calories(),
 	}
 
 	return info
