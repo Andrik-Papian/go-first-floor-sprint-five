@@ -68,8 +68,7 @@ func (t Training) TrainingInfo() InfoMessage {
 	speed := t.meanSpeed()
 	calories := t.Calories()
 
-	// Создаем структуру InfoMessage и заполняем поля
-	info := InfoMessage{
+	return InfoMessage{
 		TrainingType: t.TrainingType,
 		Duration:     t.Duration,
 		Distance:     distance,
@@ -77,7 +76,15 @@ func (t Training) TrainingInfo() InfoMessage {
 		Calories:     calories,
 	}
 
-	return info
+	/*info := InfoMessage{
+		TrainingType: t.TrainingType,
+		Duration:     t.Duration,
+		Distance:     distance,
+		Speed:        speed,
+		Calories:     calories,
+	}
+
+	return info*/
 
 }
 
@@ -130,8 +137,8 @@ func (r Running) Calories() float64 {
 func (r Running) TrainingInfo() InfoMessage {
 	// вставьте ваш код ниже
 	// Вычисляем дистанцию, среднюю скорость и количество калорий с использованием методов из структуры Running.
-
-	info := InfoMessage{
+	return r.Training.TrainingInfo()
+	/*info := InfoMessage{
 		TrainingType: r.TrainingType,
 		Duration:     r.Duration,
 		Distance:     r.distance(),
@@ -139,7 +146,7 @@ func (r Running) TrainingInfo() InfoMessage {
 		Calories:     r.Calories(),
 	}
 
-	return info
+	return info*/
 
 }
 
@@ -175,8 +182,8 @@ func (w Walking) Calories() float64 {
 // Это переопределенный метод TrainingInfo() из Training.
 func (w Walking) TrainingInfo() InfoMessage {
 	// вставьте ваш код ниже
-
-	info := InfoMessage{
+	return w.Training.TrainingInfo()
+	/*info := InfoMessage{
 		TrainingType: w.TrainingType,
 		Duration:     w.Duration,
 		Distance:     w.distance(),
@@ -184,7 +191,7 @@ func (w Walking) TrainingInfo() InfoMessage {
 		Calories:     w.Calories(),
 	}
 
-	return info
+	return info*/
 }
 
 // Константы для расчета потраченных килокалорий при плавании.
